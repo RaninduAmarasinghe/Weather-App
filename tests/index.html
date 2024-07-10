@@ -1,0 +1,61 @@
+import { JSDOM } from 'jsdom';
+import { expect } from 'chai';
+
+describe('index.html', () => {
+  let dom;
+  let document;
+
+  beforeEach(() => {
+    dom = new JSDOM(`<!DOCTYPE html>${require('fs').readFileSync('index.html', 'utf-8')}`);
+    document = dom.window.document;
+  });
+
+  it('should have a title of "Weather App"', () => {
+    const title = document.querySelector('title');
+    expect(title.textContent).to.equal('Weather App');
+  });
+
+  it('should have an input field for city name', () => {
+    const input = document.querySelector('input[type="text"]');
+    expect(input).to.exist;
+    expect(input.placeholder).to.equal('enter city name');
+  });
+
+  it('should have a search button', () => {
+    const button = document.querySelector('button');
+    expect(button).to.exist;
+    const img = button.querySelector('img');
+    expect(img.src).to.contain('search.png');
+    expect(img.alt).to.equal('Search');
+    expect(img.title).to.equal('Search');
+  });
+
+  it('should have a weather icon', () => {
+    const img = document.querySelector('.weather-icon');
+    expect(img).to.exist;
+    expect(img.src).to.contain('rain.png');
+    expect(img.alt).to.equal('search');
+    expect(img.title).to.equal('search');
+  });
+
+  it('should have a temperature display', () => {
+    const temp = document.querySelector('.temp');
+    expect(temp).to.exist;
+    expect(temp.textContent).to.equal('22°C');
+  });
+
+  it('should have a city display', () => {
+    const city = document.querySelector('.city');
+    expect(city).to.exist;
+    expect(city.textContent).to.equal('New York');
+  });
+
+  it('should have humidity and wind speed displays', () => {
+    const humidity = document.querySelector('.humidity');
+    expect(humidity).to.exist;
+    expect(humidity.textContent).to.equal('50%');
+
+    const wind = document.querySelector('.Wind');
+    expect(wind).to.exist;
+    expect(wind.textContent).to.equal('15km/h');
+  });
